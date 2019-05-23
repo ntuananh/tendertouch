@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
   },
   "author": "Anh Nguyen <atnguyen.cs@gmail.com",
   "license": "ISC",
@@ -13,6 +14,10 @@
     "express": "^4.17.0",
     "hbs": "^4.0.4",
     "mongoose": "^5.5.10",
-    "request": "^2.88.0"
+    "request": "^2.88.0",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.0"
   }
 }
