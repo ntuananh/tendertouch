@@ -1,29 +1,67 @@
 const express = require('express')
-const router = new express.Router()
 const Technician = require('../models/technician')
+const auth = require('../middleware/auth')
+
+const router = new express.Router()
 
 router.post('/technicians', async (req, res) => {
     const technician = new Technician(req.body)
 
     try {
         await technician.save()
-        res.status(201).send(technician)
+        const token = await technician.generateAuthToken()
+
+        res.status(201).send({
+            technician,
+            token
+        })
     } catch (e) {
-        res.status(400).send(error)
+        res.status(400).send(e)
     }
 })
 
-router.get('/technicians', async (req, res) => {
+router.post('/technicians/login', async (req, res) => {
     try {
-        const technicians = await Technician.find({})
-        res.send(technicians)
-    } catch (error) {
+        const technician = await Technician.findByCredentials(req.body.email, req.body.password)
+        const token = await technician.generateAuthToken()
+        res.send({
+            technician,
+            token
+        })
+    } catch (e) {
+        res.status(400).send()
+    }
+})
+
+router.post('/technicians/logout', auth, async (req, res) => {
+    try {
+        req.technician.tokens = req.technician.tokens.filter(token => {
+            return token.token !== req.token
+        })
+
+        await req.technician.save()
+
+        res.send()
+    } catch (e) {
         res.status(500).send()
     }
 })
 
+router.post('/technicians/logoutAll', auth, async (req, res) => {
+    try {
+        req.technician.tokens = []
+        await req.technician.save()
+        res.send()
+    } catch (e) {
+        res.status(500).send()
+    }
+})
+router.get('/technicians/me', auth, async (req, res) => {
+    res.send(req.technician)
+})
 
-app.get('/technicians/:id', async (req, res) => {
+
+router.get('/technicians/:id', async (req, res) => {
     const _id = req.params.id
 
     try {
@@ -38,28 +76,30 @@ app.get('/technicians/:id', async (req, res) => {
     }
 })
 
-router.patch('/technicians/:id', async (req, res) => {
+router.patch('/technicians/:id', auth, async (req, res) => {
     try {
-        const technician = await Technician.findByIdAndDelete(req.params.id, req.body, { new: true, runValidators: true })
+        const technician = await Technician.findById(req.params.id)
 
         if (!technician) {
             return res.status(404).send()
         }
 
+        Object.keys(req.body).forEach(element => {
+            technician[element] = req.body[element]
+        });
+
+        await technician.save()
+
         res.send(technician)
     } catch (error) {
-        res.status(400).send(error)
+        res.status(500).send(error)
     }
 })
 
-router.delete('/technicians/:id', async (req, res) => {
+router.delete('/technicians/me', auth, async (req, res) => {
     try {
-        const technician = await Technician.findByIdAndDelete(req.params.id)
-        if (!technician) {
-            res.status(404).send()
-        }
-
-        res.send(technician)
+        await req.technician.remove()
+        res.send(req.technician)
     } catch (error) {
         res.status(500).send(error)
     }
