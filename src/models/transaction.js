@@ -15,6 +15,8 @@ const transactionSchema = new mongoose.Schema({
         type: String,
         default: ''
     }
+}, {
+    timestamps: true
 })
 
 const Transaction = mongoose.model('Transaction', transactionSchema)

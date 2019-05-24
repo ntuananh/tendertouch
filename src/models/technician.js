@@ -42,6 +42,8 @@ const technicianSchema = new mongoose.Schema({
             required: true
         }
     }]
+}, {
+    timestamps: true
 })
 
 technicianSchema.methods.generateAuthToken = async function() {
