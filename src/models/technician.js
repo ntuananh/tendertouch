@@ -48,7 +48,7 @@ const technicianSchema = new mongoose.Schema({
 
 technicianSchema.methods.generateAuthToken = async function() {
     const technician = this
-    const token = jwt.sign({_id: technician._id.toString()}, 'mysecret')
+    const token = jwt.sign({_id: technician._id.toString()}, process.env.JWT_SECRET)
 
     technician.tokens = technician.tokens.concat({token})
     await technician.save()

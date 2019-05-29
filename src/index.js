@@ -9,7 +9,16 @@ const customerRouter = require('./routers/customer')
 const transactionRouter = require('./routers/transaction')
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT
+
+const multer = require('multer')
+const upload = multer({
+    dest: 'images'
+})
+
+app.post('/upload', upload.single('upload'), (req, res) => {
+    res.send()
+})
 
 app.use(express.json())
 app.use(technicianRouter)

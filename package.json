@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "env-cmd nodemon src/index.js"
   },
   "author": "Anh Nguyen <atnguyen.cs@gmail.com",
   "license": "ISC",
@@ -16,10 +16,12 @@
     "hbs": "^4.0.4",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.5.10",
+    "multer": "^1.4.1",
     "request": "^2.88.0",
     "validator": "^10.11.0"
   },
   "devDependencies": {
+    "env-cmd": "^9.0.1",
     "nodemon": "^1.19.0"
   }
 }
