@@ -4,14 +4,8 @@ const database = require('../database.js')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  let name='';
-  database.query('SELECT * FROM staff', function (err, rows, fields) {
-    name = rows[0].name
-    console.log('Hello : ', name);
-    res.render('index', { title: name });
-  });
+  let name='Dear';
+    res.render('index', { title: name , message: 'Hello there!'});
 });
-
-
 
 module.exports = router;
