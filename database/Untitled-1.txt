@@ -1,0 +1,31 @@
+Features:
+- Customer:
+    + Checkin:
+        + Input phone number -> SSD
+        + Pick services
+        + Pick technicians (optional)
+
+    + Make appointment
+
+- Admin:
+    + CRUD services
+    + CRUD technicians
+    + Checkout
+        + Bill
+
+    + Make appointment
+
+- Technician:
+    + View appointment
+
+- System:
+    + Send SMS (AWS SNS)
+    + Discount: percent
+    + Write a review
+
+Database:
+    Technician: id, name, phone, email
+    Service: id, name, price, duration, group_id
+    service group: id, name, 
+    transaction: id, customer_id, date
+    transaction_service: transaction_id, service_id, technician_id, price, discount
